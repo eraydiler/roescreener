@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
   <head>
     <title>Hello World</title>
@@ -6,4 +6,92 @@
   <body>
     <h1>Hello World!</h1>
   </body>
+</html> -->
+<html>
+<head>
+    <style>
+        body { font-family: arial; margin: 20px; }
+        td { padding: 5px; }
+        .bullish { background: green; color: white; }
+        .bearish { background: red; color: white; }
+        .consolidating { background: blueviolet; color: white; }
+        .breakingout { background: green; color: white; }
+    </style>
+</head>
+<body>
+    <form method="post" action="/">
+    <h1>Configurations</h1>
+        <select name="timeframe">
+            <!-- <option value="None">-- Select a Timeframe --</option> -->
+            {% for key in timeframes %}
+                <option value="{{ key }}" {% if timeframe == key %}selected="selected"{% endif %}>{{ timeframes[key] }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Reload Data" name="data_reload" />
+    <!-- <h1>Pattern Scanner</h1>
+        <select name="pattern">
+            <option value="">-- Select a Pattern --</option>
+            {% for key in patterns %}
+                <option value="{{ key }}" {% if pattern == key %}selected="selected"{% endif %}>{{ patterns[key] }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Pattern Scan" name="pattern_scan" /> -->
+    <h1>Indicator Scanner</h1>
+        <select name="indicator">
+            <option value="">-- Select an Indicator --</option>
+            {% for key in indicators %}
+                <option value="{{ key }}" {% if indicator == key %}selected="selected"{% endif %}>{{ indicators[key] }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="Indicator Scan" name="indicator_scan" />
+    </form>
+
+    <table>
+        <tr>
+            <th>symbol</th>
+            <th>company</th>
+            <th>signal</th>
+        </tr>
+        {% for stock in stocks %}
+            {% if stocks[stock][pattern] %}
+            <tr>
+                <td>
+                    {{ stock }}
+                </td>
+                <td>
+                    {{ stocks[stock]['company'] }}
+                </td>
+                <td class="{{ stocks[stock][pattern] }}">
+                    {{ stocks[stock][pattern]}}
+                </td>
+            {% if timeframe == "daily" %}
+            <tr>
+                <td colspan="3">
+                    <img src="https://finviz.com/chart.ashx?t={{ stock }}&ty=c&ta=1&p=d&s=l" />
+                </td>
+            </tr>
+            {% endif %}
+            {% elif stocks[stock][indicator] %}
+            <tr>
+                <td>
+                    {{ stock }}
+                </td>
+                <td>
+                    {{ stocks[stock]['company'] }}
+                </td>
+                <td class="{{ stocks[stock][indicator] }}">
+                    {{ stocks[stock][indicator]}}
+                </td>
+            {% if timeframe == "daily" %}
+            <tr>
+                <td colspan="3">
+                    <img src="https://finviz.com/chart.ashx?t={{ stock }}&ty=c&ta=1&p=d&s=l" />
+                </td>
+            </tr>
+            {% endif %}
+            {% endif %}
+        {% endfor %}
+    </table>
+</body>
 </html>
