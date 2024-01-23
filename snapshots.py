@@ -3,8 +3,8 @@ import yfinance as yf
 from datetime import date
 
 def reloadData(timeframe):
-    with open('datasets/symbols.csv') as f:
-        for line in f:
+    with open('datasets/symbols.csv') as file:
+        for line in file:
             if "," not in line:
                 continue
             symbol = line.split(",")[0]
